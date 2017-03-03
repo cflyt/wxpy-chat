@@ -3,6 +3,7 @@ import os
 import  sys,getopt
 import time
 import datetime
+import re
 from IPython  import embed
 
 global stop
@@ -38,6 +39,24 @@ def fg(robot,name):
     g = ensure_one(robot.groups().search(name))
     g.update_group(True)
     return g
+
+def caixingzuo(robot,name):
+    who = ff(robot,name)
+    # 发送图片
+    for i in range(4):
+        who.send_image("imgs/star{}.png".format(str(i + 1)))
+
+    #注册猜星座逻辑
+    @robot.register(who)
+    def reply_my_friend(msg):
+        if msg.type == 'Text':
+            m = re.match(r'(1?2?3?4?)', msg.text)
+
+
+
+        else:
+            return '请按格式输入你的结果'
+
 
 
 def tiaoxi(robot,first_msg,who):
