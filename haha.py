@@ -3,6 +3,7 @@ import os
 import  sys,getopt
 import time
 import datetime
+from IPython  import embed
 
 global stop
 
@@ -29,32 +30,42 @@ def tuling_reply(robot,tuling,who):
         tuling.do_reply(msg)
 
 
+def ff(robot,name):
+    chatter = robot.friends().search(name)[0]
+    return chatter
+
+def fg(robot,name):
+    g = ensure_one(robot.groups().search(name))
+    g.update_group(True)
+    return g
+
+
 def tiaoxi(robot,first_msg,who):
     chatWith(robot,first_msg,who)
     chatter = robot.friends().search(who)[0]
     @robot.register(chatter)
     def reply_my_friend(msg):
         if msg.type == 'Text':
-            if msg.text == '大叔是好人':
-                return '哈哈，小妮子乖，大叔明天给你买棒棒糖……[阴险]'
+            if msg.text == '爸爸':
+                return '哈哈，儿子乖，爸爸明天给你买棒棒糖……[阴险]'
             else:
-                return '说大叔是好人，5个字，不要多说一个字……[猪头]'
+                return '快点叫爸爸，2个字，不要多说一个字……[猪头]'
         else:
-            return '大叔文字控，别发图片表情之类的,看不懂'
+            return '爸爸文字控，别发图片表情之类的,看不懂'
         # return 'received: {} ({})'.format(msg.text, msg.type)
 
 
 def flowers(robot,whoo):
-    chatWith(robot, 'hello,非空想家派我来给您送花了,每隔1分钟多送一朵哦,鲜花正在传输中，请耐心等待……(*^__^*)', whoo)
+    chatWith(robot, 'hello,非空想家派我来给您送肉了,每隔30秒多送一头哦,肉肉正在传输中，请耐心等待……(*^__^*)', whoo)
     n = 1
-    while (true):
-        now = datetime.datetime.now() + datetime.timedelta(seconds=60)
-        msg = '现在时间: %s,这是我第%s次送花.' % (now.strftime('%H:%M:%S'), str(n))
-        delay_msg(robot,60,whoo,msg)
+    while (True):
+        now = datetime.datetime.now() + datetime.timedelta(seconds=30)
+        msg = '现在时间: %s,这是我第%s次送肉.' % (now.strftime('%H:%M:%S'), str(n))
+        delay_msg(robot,30,whoo,msg)
         # 送花
         flower = ''
         for i in range(n):
-            flower += '[玫瑰]'
+            flower += '[猪头]'
         chatWith(robot, flower, whoo)
         n += 1
 
@@ -62,12 +73,17 @@ def delay_msg(robot,delay,who,text):
     time.sleep(delay)
     chatWith(robot,text,who)
 
+
 def main():
-    robot = Robot(save_path='data.txt')
+    robot = Robot(save_path='data')
     tuling = Tuling('a9f9aad2e3cb49a88615364568e60770')
     tuling_reply(robot,tuling,'林飞')
-    tuling_reply(robot, tuling, 'xl')
-    robot.start()
+    tuling_reply(robot, tuling, 'Miss-翢瑒')
+    # tiaoxi(robot,'谁说我不能自己说话了,叫爸爸,快点','xl')
+    # flowers(robot,'xl')
+    robot.start(block=False)
+    embed(header='console')
+    robot.logout()
 
 if __name__ == "__main__":
     main()
