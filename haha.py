@@ -42,18 +42,28 @@ def fg(robot,name):
 
 def caixingzuo(robot,name):
     who = ff(robot,name)
+    chatWith(robot,'hello,{}.you\'re so lucky that you\'ve been choosed to help ideago test his auto-guess-constellation script.'.format(name),name)
+    chatWith(robot,'下面小呆会给你发送四张图片,你要仔细观察四张图片里哪几张含有你的星座，然后把你的结果发送给小呆就可以。举个例子，如果你的星座只有第一和第二张有那就发送12就可以，123都有就发送123,14有就发14,不要发任何多余的字符哦，小呆是没法识别的……[呲牙]',name)
     # 发送图片
     for i in range(4):
         who.send_image("imgs/star{}.png".format(str(i + 1)))
+
+    chatWith(robot,
+             '图片发送已完成，请仔细观察后，告诉小呆结果，它就能猜出你的星座了。',name)
 
     #注册猜星座逻辑
     @robot.register(who)
     def reply_my_friend(msg):
         if msg.type == 'Text':
-            m = re.match(r'(1?2?3?4?)', msg.text)
-
-
-
+            m = re.match(r'(\b1?2?3?4?\b)', msg.text)
+            res = m.group()
+            dict = {'1':1,'2':2,'3':4,'4':8}
+            if res != '':
+                index = 0
+                signs = ['白羊座','金牛座','双子座','巨蟹座','狮子座','处女座','天秤座','天蝎座','射手座','摩羯座','水瓶座','双鱼座']
+                for i in range(len(res)):
+                    index += int(dict[res[i]])
+                return '小呆知道你的星座了，你的星座是{}--{}---{}，小呆很聪明吧……[得意][偷笑][得意]'.format(signs[index-1],res,index)
         else:
             return '请按格式输入你的结果'
 
