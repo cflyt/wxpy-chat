@@ -63,7 +63,10 @@ def caixingzuo(robot,name):
                 signs = ['白羊座','金牛座','双子座','巨蟹座','狮子座','处女座','天秤座','天蝎座','射手座','摩羯座','水瓶座','双鱼座']
                 for i in range(len(res)):
                     index += int(dict[res[i]])
-                return '小呆知道你的星座了，你的星座是{}--{}---{}，小呆很聪明吧……[得意][偷笑][得意]'.format(signs[index-1],res,index)
+
+                if index > 12 : return '小呆虽然智商低，但眼睛还是很雪亮的，你这个组合根本不可能，你再好好看看图，是不是看错了呢 ……[抠鼻]'
+
+                return '小呆知道你的星座了，你的星座是{}，小呆很聪明吧……[得意][偷笑][得意]'.format(signs[index-1])
         else:
             return '请按格式输入你的结果'
 
@@ -75,12 +78,12 @@ def tiaoxi(robot,first_msg,who):
     @robot.register(chatter)
     def reply_my_friend(msg):
         if msg.type == 'Text':
-            if msg.text == '爸爸':
-                return '哈哈，儿子乖，爸爸明天给你买棒棒糖……[阴险]'
+            if msg.text == '非空想家很帅':
+                return '哈哈，谢谢夸奖我爸爸，我替我爸爸给你送花……[玫瑰]'
             else:
-                return '快点叫爸爸，2个字，不要多说一个字……[猪头]'
+                return '快点夸非空想家很帅，6个字，不要多说一个字……[猪头]'
         else:
-            return '爸爸文字控，别发图片表情之类的,看不懂'
+            return '小呆是文字控，别发图片表情之类的,看不懂'
         # return 'received: {} ({})'.format(msg.text, msg.type)
 
 
