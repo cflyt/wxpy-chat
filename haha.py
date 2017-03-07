@@ -106,9 +106,20 @@ def delay_msg(robot,delay,who,text):
     chatWith(robot,text,who)
 
 
+def recieve_picture(robot,who):
+    chatter = robot.friends().search(who)[0]
+    if who == None: chatter = robot.self
+    @robot.register(chatter,except_self=False)
+    def print_message(msg):
+        if  msg.type == 'Picture':
+            now = datetime.datetime.now()
+            msg.get_file('/Users/ideago/Desktop/wximgs/{}.png'.format(now))
+
+
 def main():
     robot = Robot(save_path='data')
     tuling = Tuling('a9f9aad2e3cb49a88615364568e60770')
+    recieve_picture(robot,None)
     tuling_reply(robot,tuling,'林飞')
     tuling_reply(robot, tuling, 'Miss-翢瑒')
     # tiaoxi(robot,'谁说我不能自己说话了,叫爸爸,快点','xl')
